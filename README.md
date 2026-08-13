@@ -571,22 +571,25 @@ The recommendation graph demonstrates the main advantage of the graph-based appr
 
 ## Screenshots
 
-### 1. Developers
+### 1. Dashboard
 
-![Developers Page](./screenshots/sc%20(1).png)
+![Dashboard](./screenshots/sc%20(1).png)
 
-### 2. Jobs
+### 2. Developers
 
-![Jobs Page](./screenshots/sc%20(2).png)
+![Developers Page](./screenshots/sc%20(2).png)
 
-### 3. Skills
+### 3. Jobs
 
-![Skills Page](./screenshots/sc%20(3).png)
+![Jobs Page](./screenshots/sc%20(3).png)
 
-### 4. Projects
+### 4. Skills
 
 ![Projects Page](./screenshots/sc%20(4).png)
+### 5.Projects
+
+![Projects Page](./screenshots/sc%20(5).png)
 
 ### 5. Recommendations & Knowledge Graph
 
-![Recommendations Graph](./screenshots/sc%20(5).png)
+![Recommendations & Knowledge Graph](./screenshots/sc.png)
