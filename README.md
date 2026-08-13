@@ -1,80 +1,123 @@
 WEXA CognoDB — Frontend
 
-React frontend for the WEXA CognoDB graph application.
+A React + TypeScript frontend for the WEXA CognoDB graph database application.
 
-Overview
+The application provides a user-friendly interface for exploring developers, skills, jobs, projects, and graph-based recommendations backed by CognoDB.
 
-The frontend provides the UI for:
+Live Backend API
+
+The frontend is connected to the deployed backend:
+
+https://next-js-backend-wexa.onrender.com
+
+API base URL:
+
+https://next-js-backend-wexa.onrender.com/api
+
+The backend is hosted on Render and communicates with CognoDB through the official Neo4j driver.
+
+Application Features
+
+The frontend provides:
 
 Dashboard
-
-Developers
-
-Jobs
-
-Skills
-
-Projects
-
+Developer listing
+Developer search
+Developer infinite scrolling
+Job listing
+Job search
+Job pagination
+Skills listing
+Skill search
+Skill infinite scrolling
+Projects listing
+Project search
+Project pagination
 Developer recommendations
-
-Recommendation graph visualization
-
-It communicates with the Express backend through Axios and uses TanStack React Query for server-state management.
-
-Tech Stack
-
+Related-skill job recommendations
+Similar developer recommendations
+Interactive recommendation graph
+Loading states
+Empty states
+Error states
+Refresh functionality
+Responsive UI
+Technology Stack
 React 19
-
 TypeScript
-
 Vite
-
 Tailwind CSS v4
-
 TanStack React Query
-
 Axios
-
 React Router
-
 Lucide React
-
 @xyflow/react / React Flow
 
-Folder Structure
+The assignment requires a functional web application with intentional UI/UX, readable typography, loading states, empty states, and graceful error handling.
 
+Frontend Folder Structure
 frontend/
+│
+├── public/
+│
+├── src/
+│   │
+│   ├── assets/
+│   │
+│   ├── components/
+│   │   ├── common/
+│   │   │   ├── ErrorStates.tsx
+│   │   │   └── LoadingSpinner.tsx
+│   │   │
+│   │   └── hooks/
+│   │       └── useDebounce.ts
+│   │
+│   ├── features/
+│   │   │
+│   │   ├── api/
+│   │   │   └── api.ts
+│   │   │
+│   │   ├── Dashboard/
+│   │   │
+│   │   ├── Developers/
+│   │   │   ├── data/
+│   │   │   ├── domain/
+│   │   │   └── presentation/
+│   │   │
+│   │   ├── Jobs/
+│   │   │   ├── data/
+│   │   │   ├── domain/
+│   │   │   └── presentation/
+│   │   │
+│   │   ├── Skills/
+│   │   │   ├── data/
+│   │   │   ├── domain/
+│   │   │   └── presentation/
+│   │   │
+│   │   ├── Projects/
+│   │   │   ├── data/
+│   │   │   ├── domain/
+│   │   │   └── presentation/
+│   │   │
+│   │   └── Recommendations/
+│   │       ├── data/
+│   │       ├── domain/
+│   │       └── presentation/
+│   │
+│   ├── App.tsx
+│   ├── App.css
+│   ├── index.css
+│   └── main.tsx
+│
 ├── package.json
 ├── vite.config.ts
 ├── tsconfig.json
 ├── tsconfig.app.json
 ├── tsconfig.node.json
-├── public/
-└── src/
-    ├── assets/
-    ├── features/
-    │   ├── api/
-    │   │   └── api.ts
-    │   ├── components/
-    │   │   ├── common/
-    │   │   ├── hooks/
-    │   │   └── layout/
-    │   └── pages/
-    │       ├── Dashboard/
-    │       ├── Developers/
-    │       ├── Jobs/
-    │       ├── Projects/
-    │       ├── Recommendations/
-    │       └── Skills/
-    ├── App.tsx
-    ├── App.css
-    ├── index.css
-    └── main.tsx
+└── README.md
+Frontend Architecture
 
-Feature Architecture
-
-The feature pages use a presentation/domain/data separation.
+The application follows a presentation/domain/data separation.
 
 Page
   ↓
@@ -86,28 +129,40 @@ Domain Repository Interface
   ↓
 Data Repository Implementation
   ↓
-Axios API
+Axios API Client
   ↓
 Backend API
+  ↓
+CognoDB
 
 For example, the Developers feature follows:
 
-Developers.tsx
-  ↓
+DevelopersPage
+    ↓
 useDevelopers()
-  ↓
+    ↓
 GetDevelopers
-  ↓
+    ↓
+DeveloperRepository
+    ↓
 DeveloperRepositoryImpl
-  ↓
-API client
-  ↓
+    ↓
+API Client
+    ↓
 GET /api/developers
+    ↓
+Express Backend
+    ↓
+CognoDB
 
-The same pattern is used for Jobs, Skills, Projects, and Recommendations.
+The same architecture is used for:
 
-Main Routes
-
+Developers
+Jobs
+Skills
+Projects
+Recommendations
+Application Routes
 /                         Dashboard
 /developers               Developers
 /jobs                     Jobs
@@ -115,43 +170,54 @@ Main Routes
 /projects                 Projects
 /recommendations/:id      Developer Recommendations
 
-Example recommendation route:
+Example:
 
 /recommendations/DEV001
 
-The developer ID is taken from the route and passed to the recommendation hooks.
+The developer ID is taken from the URL using React Router and passed to the recommendation hooks.
 
-Search and Infinite Scroll
+Search and Pagination
 
 Developers and Skills use infinite scrolling.
 
-Search input
-   ↓
+The search flow is:
+
+User types search
+      ↓
 useDebounce()
-   ↓
+      ↓
 React Query queryKey
-   ↓
+      ↓
 API request
-   ↓
+      ↓
 First page
-   ↓
+      ↓
 IntersectionObserver
-   ↓
+      ↓
 fetchNextPage()
-   ↓
+      ↓
 Next page
 
-The listing API uses:
+Example:
 
-?page=1&limit=10&search=react
+GET /api/developers?page=1&limit=10&search=react
 
-The frontend combines the returned pages into one list.
+Skills use the same pattern:
 
-Jobs and Projects use the corresponding backend pagination/search response according to their feature implementation.
+GET /api/skills?page=1&limit=10&search=react
+
+Jobs and Projects use page-based pagination.
+
+Example:
+
+GET /api/jobs?page=1&limit=10&search=developer
+GET /api/projects?page=1&limit=10&search=web
+
+The frontend keeps the current data while a new search/page request is being fetched where appropriate, providing a smoother user experience.
 
 Recommendation Graph
 
-The recommendation page uses the recommendation hooks:
+The recommendation page uses:
 
 useDeveloperJobs()
 useRelatedSkillJobs()
@@ -159,203 +225,368 @@ useSimilarDevelopers()
 
 The flow is:
 
-Recommendations/:developerId
-        ↓
+/recommendations/:developerId
+          ↓
 Recommendation Hooks
-        ↓
+          ↓
 Recommendation Repository
-        ↓
-Backend Recommendation API
-        ↓
+          ↓
+Backend Recommendation APIs
+          ↓
 Recommendation Results
-        ↓
+          ↓
+Graph Node/Edge Mapping
+          ↓
 React Flow
 
 The graph represents:
 
-Developer
-   ├── Matching Jobs
-   │      └── Company
-   │
-   ├── Related Skill Jobs
-   │      └── Related Skills
-   │
-   └── Similar Developers
+                         ┌───────────────┐
+                         │   Developer   │
+                         └───────┬───────┘
+                                 │
+              ┌──────────────────┼──────────────────┐
+              │                  │                  │
+              ▼                  ▼                  ▼
+       Matching Jobs       Related Skill Jobs   Similar Developers
+              │                  │
+              ▼                  ▼
+           Company         Related Skills
 
-React Flow provides the interactive graph with nodes, edges, arrows, zoom controls, minimap and responsive graph layout.
+React Flow provides:
 
-Backend Connection
+Interactive nodes
+Relationship edges
+Direction arrows
+Zoom controls
+MiniMap
+Dragging
+Responsive graph layout
+Automatic fitView
 
-The current local backend/API configuration is:
+The graph data is generated from recommendation API responses and is not hard-coded.
 
-Frontend: http://localhost:5173
-Backend:  http://localhost:5001
-API:      http://localhost:5001/api
+Recommendation Data Mapping
 
-If the backend port changes, update the frontend API configuration accordingly.
+The recommendation APIs return nested objects.
+
+For example:
+
+{
+  job: {
+    id,
+    title,
+    location
+  },
+  company: {
+    id,
+    name,
+    industry
+  },
+  matchedSkills
+}
+
+The frontend maps these properties into graph nodes.
+
+Unique IDs are generated from actual entity IDs:
+
+developer-DEV001
+developer-job-JOB001
+developer-skill-job-JOB013
+developer-company-COMP001
+developer-similar-DEV006
+
+This prevents duplicate React keys and ensures graph edges connect to existing nodes.
+
+Backend API
+
+Production backend:
+
+https://next-js-backend-wexa.onrender.com
+
+API base:
+
+https://next-js-backend-wexa.onrender.com/api
+Dashboard
+GET /api/dashboard/stats
+Developers
+GET /api/developers
+GET /api/developers/:id
+GET /api/developers/:id/skills
+GET /api/developers/:id/projects
+GET /api/developers/:id/companies
+GET /api/developers/skill/:skillId
+
+Search:
+
+GET /api/developers?page=1&limit=10&search=react
+Jobs
+GET /api/jobs
+GET /api/jobs/:id
+GET /api/jobs/:id/skills
+GET /api/jobs/:id/company
+
+Search:
+
+GET /api/jobs?page=1&limit=10&search=developer
+Skills
+GET /api/skills
+GET /api/skills/:id
+GET /api/skills/:id/related
+GET /api/skills/:id/developers
+GET /api/skills/:id/jobs
+
+Search:
+
+GET /api/skills?page=1&limit=10&search=react
+Projects
+GET /api/projects
+GET /api/projects/:id
+GET /api/projects/:id/skills
+GET /api/projects/:id/developers
+
+Search:
+
+GET /api/projects?page=1&limit=10&search=web
+Recommendations
+GET /api/recommendations/developers/:developerId/jobs
+
+GET /api/recommendations/developers/:developerId/related-jobs
+
+GET /api/recommendations/jobs/:jobId/developers
+
+GET /api/recommendations/developers/:developerId/similar
+Environment Configuration
+
+Create a .env file in the frontend project if the API URL is configured through Vite environment variables.
+
+Example:
+
+VITE_API_BASE_URL=https://next-js-backend-wexa.onrender.com/api
+
+Do not commit secrets or private credentials.
 
 Installation
 
-From the frontend directory:
+Clone the repository and enter the frontend directory:
+
+cd frontend
+
+Install dependencies:
 
 npm install
 
-Run Development Server
+The recommendation graph requires:
 
+npm install @xyflow/react
+
+If @xyflow/react is already declared in package.json, a normal npm install is sufficient.
+
+Run Development Server
 npm run dev
 
-Vite normally starts the frontend at:
+Vite normally starts the application at:
 
 http://localhost:5173
 
+The frontend will communicate with:
+
+https://next-js-backend-wexa.onrender.com/api
 Production Build
-
 npm run build
-
 Preview Production Build
-
 npm run preview
-
 Lint
-
 npm run lint
+Error and Loading Handling
 
-Frontend Environment
+The application handles:
 
-If the project uses frontend environment configuration, create the required .env file from the provided environment template/configuration.
+Loading
+LoadingSpinner
+API Error
+ErrorStates
+Empty Data
 
-Do not commit private credentials or secrets.
+Each major feature displays a meaningful empty state when no records are available.
+
+Refresh
+
+Users can manually refresh API data using the Refresh button.
+
+Why the Frontend Uses React Query
+
+TanStack React Query manages server state including:
+
+API requests
+Caching
+Query invalidation
+Loading state
+Error state
+Refetching
+Infinite queries
+Pagination
+
+This keeps API state separate from local UI state such as search inputs and navigation.
 
 Development Flow
 
 For a UI change:
 
 Page
- ↓
+  ↓
 Presentation Component
- ↓
+  ↓
 Hook
- ↓
+  ↓
 Use Case
- ↓
+  ↓
 Repository
- ↓
+  ↓
 API
 
-For a data/API issue, trace the feature in the reverse direction:
+For an API issue:
 
 UI
- ↓
+  ↓
 Hook
- ↓
+  ↓
 Repository
- ↓
-API endpoint
- ↓
+  ↓
+API Endpoint
+  ↓
 Backend
+  ↓
+CognoDB
 
-For navigation issues, check the React Router configuration.
+For graph issues:
 
-For graph issues, check:
-
-Recommendations page
- ↓
-useDeveloperJobs()
-useRelatedSkillJobs()
-useSimilarDevelopers()
- ↓
-RecommendationRepositoryImpl
- ↓
-API response shape
- ↓
-Node/edge mapping
- ↓
+Recommendations Page
+  ↓
+Recommendation Hooks
+  ↓
+Recommendation Repository
+  ↓
+API Response
+  ↓
+Node/Edge Mapping
+  ↓
 React Flow
-
-Important Dependency
-
-The recommendation graph requires:
-
-npm install @xyflow/react
-
-The project package declares @xyflow/react; running npm install in the frontend should install it.
-
-Common Commands
-
-npm install
-npm run dev
-npm run build
-npm run lint
-npm run preview
-
 Troubleshooting
-
 Frontend cannot reach backend
 
-Check that the backend is running:
+Check:
 
-http://localhost:5001
+https://next-js-backend-wexa.onrender.com
 
-Then verify the frontend API base URL points to:
+and verify that the frontend API base URL is:
 
-http://localhost:5001/api
+https://next-js-backend-wexa.onrender.com/api
+Search appears to reload the page
+
+Search should be handled as React state and passed through useDebounce().
+
+The search flow should not perform a browser navigation.
 
 Recommendation graph is empty
 
 Check:
 
 A valid developer ID is present in the URL.
-
 Recommendation APIs return data.
+The API response is mapped correctly.
+job.id is used for job nodes.
+company.id is used for company nodes.
+developer.id is used for developer nodes.
+Every node has a unique ID.
+Every edge references an existing source and target node.
+Duplicate graph keys
 
-The frontend response mapping uses job.id, company.id, and developer.id.
-
-Graph node IDs are unique.
-
-Graph edges reference existing node IDs.
-
-Duplicate React keys
-
-Every graph node should have a unique ID. Avoid values such as:
+Do not use:
 
 developer-job-undefined
 
-Use the actual API IDs:
+Use:
 
 developer-job-JOB001
 developer-skill-job-JOB013
 developer-similar-DEV006
-
 Objects rendered as React children
 
-Recommendation API objects such as company and job must be accessed through their properties.
+Do not render:
 
-For example:
+{company}
 
-company.name
-job.title
-developer.name
+Use:
 
-Do not render the complete object directly.
+{company.name}
 
-Recommended Reading Order
+Similarly:
 
-package.json
-   ↓
-vite.config.ts
-   ↓
-tsconfig files
-   ↓
-src/main.tsx
-   ↓
-src/App.tsx
-   ↓
-feature page
-   ↓
-presentation hook
-   ↓
-domain use case
-   ↓
-repository
-   ↓
-API client
+{job.title}
+{developer.name}
+Assignment Requirements Covered
+
+The WEXA assignment requires a functional application backed by CognoDB, a thoughtful graph model, realistic seed data, multi-hop Cypher queries, parameterized Neo4j-driver queries, usable UI/UX, environment-based credentials, graceful database error handling, and README documentation.
+
+This frontend provides the user-facing application for exploring that graph data.
+
+Screenshots
+
+Add screenshots of the following before final submission:
+
+1. Dashboard
+2. Developers page
+3. Jobs page
+4. Skills page
+5. Projects page
+6. Recommendation graph
+
+The assignment specifically asks for screenshots of the UI in the README.
+
+Summary
+
+WEXA CognoDB uses a React frontend to turn graph relationships into an interactive application.
+
+The frontend communicates with the Express backend, which queries CognoDB.
+
+The main flow is:
+
+React
+  ↓
+TanStack React Query
+  ↓
+Repository
+  ↓
+Axios
+  ↓
+Express API
+  ↓
+Neo4j Driver
+  ↓
+CognoDB
+
+The recommendation graph demonstrates the main advantage of the graph-based approach by visually connecting developers, skills, jobs, companies, and related developers.
+
+
+## Screenshots
+
+### 1. Developers
+
+![Developers Page](./screenshots/sc%20(1).png)
+
+### 2. Jobs
+
+![Jobs Page](./screenshots/sc%20(2).png)
+
+### 3. Skills
+
+![Skills Page](./screenshots/sc%20(3).png)
+
+### 4. Projects
+
+![Projects Page](./screenshots/sc%20(4).png)
+
+### 5. Recommendations & Knowledge Graph
+
+![Recommendations Graph](./screenshots/sc%20(5).png)
