@@ -1,0 +1,32 @@
+export const COLORS = {
+  jobs: { 
+    border: "border-blue-200", 
+    icon: "text-blue-600", 
+    iconBg: "bg-blue-50",
+    edge: "#2563eb", 
+    chipBg: "bg-blue-50", 
+    chipText: "text-blue-700",
+    lightBg: "bg-blue-50/50",
+    hoverBorder: "hover:border-blue-400",
+  },
+  skills: { 
+    border: "border-purple-200", 
+    icon: "text-purple-600", 
+    iconBg: "bg-purple-50",
+    edge: "#9333ea", 
+    chipBg: "bg-purple-50", 
+    chipText: "text-purple-700",
+    lightBg: "bg-purple-50/50",
+    hoverBorder: "hover:border-purple-400",
+  },
+  developers: { 
+    border: "border-emerald-200", 
+    icon: "text-emerald-600", 
+    iconBg: "bg-emerald-50",
+    edge: "#16a34a", 
+    chipBg: "bg-emerald-50", 
+    chipText: "text-emerald-700",
+    lightBg: "bg-emerald-50/50",
+    hoverBorder: "hover:border-emerald-400",
+  },
+};
