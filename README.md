@@ -3,6 +3,10 @@ WEXA CognoDB — Frontend
 A React + TypeScript frontend for the WEXA CognoDB graph database application.
 
 The application provides a user-friendly interface for exploring developers, skills, jobs, projects, and graph-based recommendations backed by CognoDB.
+Live Frontend API URL LIVE LINK:
+
+https://next-js-frontend-wexa.vercel.app/
+
 
 Live Backend API
 
