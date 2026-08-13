@@ -573,24 +573,31 @@ The recommendation graph demonstrates the main advantage of the graph-based appr
 
 ### 1. Dashboard
 
-<img src="./screenshots/sc%20(1).png" alt="Dashboard" width="100%" />
+<img src="./screenshots/sc1(1).png" alt="Dashboard" width="100%" />
 
 ### 2. Developers
 
-<img src="./screenshots/sc%20(2).png" alt="Developers Page" width="100%" />
+<img src="./screenshots/sc1(2).png" alt="Developers Page" width="100%" />
 
 ### 3. Jobs
 
-<img src="./screenshots/sc%20(3).png" alt="Jobs Page" width="100%" />
+<img src="./screenshots/sc1(3).png" alt="Jobs Page" width="100%" />
 
 ### 4. Skills
 
-<img src="./screenshots/sc%20(4).png" alt="Skills Page" width="100%" />
+<img src="./screenshots/sc1(4).png" alt="Skills Page" width="100%" />
 
 ### 5. Projects
 
-<img src="./screenshots/sc%20(5).png" alt="Projects Page" width="100%" />
+<img src="./screenshots/sc1(5).png" alt="Projects Page" width="100%" />
 
 ### 6. Recommendations & Knowledge Graph
 
 <img src="./screenshots/sc.png" alt="Recommendations and Knowledge Graph" width="100%" />
+
+
+
+#### Screen Recordings
+
+
+inside screenrecordings folder
