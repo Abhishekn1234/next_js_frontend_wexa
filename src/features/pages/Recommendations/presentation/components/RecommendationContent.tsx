@@ -15,7 +15,6 @@ import { RecommendationGraph } from "./RecommendationGraph";
 export function RecommendationsContent() {
   const { developerId } = useParams<{ developerId: string }>();
   const navigate = useNavigate();
-  // const { fitView } = useReactFlow();
 
   const width = useViewportWidth();
   const bp = getBreakpoint(width);
@@ -30,6 +29,7 @@ export function RecommendationsContent() {
     isError: jobsError,
     error: jobsErrorMessage,
     refetch: refetchJobs,
+    isFetching: jobsFetching,
   } = useDeveloperJobs(developerId ?? "");
 
   const {
@@ -38,6 +38,7 @@ export function RecommendationsContent() {
     isError: relatedError,
     error: relatedErrorMessage,
     refetch: refetchRelated,
+    isFetching: relatedFetching,
   } = useRelatedSkillJobs(developerId ?? "");
 
   const {
@@ -46,15 +47,19 @@ export function RecommendationsContent() {
     isError: similarError,
     error: similarErrorMessage,
     refetch: refetchSimilar,
+    isFetching: similarFetching,
   } = useSimilarDevelopers(developerId ?? "");
 
   const isLoading = jobsLoading || relatedLoading || similarLoading;
+  const isFetching = jobsFetching || relatedFetching || similarFetching;
   const isError = jobsError || relatedError || similarError;
 
-  const refreshAll = useCallback(() => {
-    refetchJobs();
-    refetchRelated();
-    refetchSimilar();
+  const refreshAll = useCallback(async () => {
+    await Promise.all([
+      refetchJobs(),
+      refetchRelated(),
+      refetchSimilar(),
+    ]);
   }, [refetchJobs, refetchRelated, refetchSimilar]);
 
   const jobsData = getArray(developerJobs);
@@ -358,7 +363,7 @@ export function RecommendationsContent() {
     <div className="space-y-3 sm:space-y-6">
       <RecommendationsHeader
         developerId={developerId}
-        isLoading={isLoading}
+        isLoading={isFetching}
         onRefresh={refreshAll}
         isMobile={isMobile}
       />
